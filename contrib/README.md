@@ -23,10 +23,11 @@ On your GIT Server install package rubygem-puppet-lint and copy `contrib/git-cus
 
 Gitlab, out of the box, does not support global hooks (one hook, triggered for many repositories),
 but you can achieve this functionality with a small patch.
-    
-    cd /opt/gitlab/embedded/service/gitlab-shell/lib
-    patch -s -N -p0 -f < '/opt/git-custom_hooks/gitlab_custom_hook.patch'
 
+```sh
+cd /opt/gitlab/embedded/service/gitlab-shell/lib
+patch -s -N -p0 -f < '/opt/git-custom_hooks/gitlab_custom_hook.patch'
+```
 
 ### Customisations
 
@@ -43,23 +44,23 @@ On your GIT Server you also need to create an SSH Key, with which you can access
 In `git-custom_hooks/ris-git-hook.rb` you want to implement the following functions / regexes.
 They are needed by to tool to find out in which repo the push happened, since the hooks are global.
 
+```ruby
+def is_puppet_module?
+  group_name.match /^puppet-modules-/
+end
 
-    def is\_puppet\_module?
-      group_name.match /^puppet-modules-/
-    end
+def is_ext_puppet_module?
+  group_name == 'puppet-modules-ext'
+end
 
-    def is\_ext\_puppet\_module?
-      group_name == 'puppet-modules-ext'
-    end
+def has_validator_checks_enabled?
+  group_name == 'puppet-modules-int' || group_name == 'puppet-config'
+end
 
-    def has\_validator\_checks\_enabled?
-      group_name == 'puppet-modules-int' || group_name == 'puppet-config'
-    end
-
-    def is\_control\_repo?
-      group_name == 'puppet-config' && repo_name == 'control_repo'
-    end
-
+def is_control_repo?
+  group_name == 'puppet-config' && repo_name == 'control_repo'
+end
+```
 
 Default setup:
 
