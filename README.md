@@ -7,6 +7,10 @@ easier. You'll love it especially when deploying your Puppet Code with
 annoying tasks like deploying module refs to specific environments with
 short commands immediately from your working directory.
 
+In the [contrib](contrib/README.md) directory you find the GIT hooks and the r10k 
+deploy shell, used by this tool.
+
+
 Installation
 ------------
 Hint: after cloning this repository, you should symlink `bin/ris-puppet`
