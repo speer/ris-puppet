@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+
+# ris-puppet - Utility collection to make life with Puppet easier
+#
+# Authors:
+#  Stefan Peer
+#  Thomas Gelf
+
+# Resolve base dir
+require 'pathname'
+basedir = File.expand_path('../..', Pathname(__FILE__).realpath)
+config_file = 'config.yaml'
+
+# Set Ruby load path
+$:.delete '.'
+$:.unshift "#{basedir}/lib"
+
+# Run the application
+require 'ris/app'
+module RisPuppet
+end
+
+Ris::App.run RisPuppet, "#{basedir}/ris-puppet", "#{basedir}/#{config_file}"

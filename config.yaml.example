@@ -1,0 +1,31 @@
+---
+
+# Location of the control repo
+git_control_repo_url: "git@example.com:puppet-config/control_repo.git"
+
+
+## Module application defaults
+
+# Module application default environment
+module_application_default_environment: "sandbox"
+
+# Module application environments where deploy/remove actions need to be forced
+module_application_force_environments:
+- "production"
+
+# GIT Groups which contain puppet modules
+module_application_git_module_groups:
+- "puppet-modules-int"
+- "puppet-modules-ext"
+
+
+## Foreman application defaults
+
+# Default host
+foreman_application_default_foremanhost: "foreman.example.com"
+
+# Default CA
+foreman_application_default_cacert: "/etc/pki/tls/certs/foreman-ca.crt.pem"
+
+# Default Puppet Smart Proxy
+foreman_application_default_smartproxy: "2-puppet.example.com"
