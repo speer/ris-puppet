@@ -1,0 +1,43 @@
+#!/usr/bin/env ruby
+
+# post-receive git hook to trigger r10k deploy on puppet master via ssh
+# or restart apache
+#
+# Authors:
+#  Stefan Peer
+#  Thomas Gelf
+
+require File.expand_path('../ris-git-hook', __FILE__)
+
+Ris::GitHook.run do ||
+
+  r10kuser = 'r10k'
+  puppetserver = 'puppet.example.com'
+
+  command = nil
+
+  if is_puppet_module?
+    command = [ 'deploy', 'module', repo_name ]
+  elsif is_control_repo?
+    unless branch.match /^no-?env/
+      if action == 'modify'
+        command = [ 'deploy', 'environment', branch ]
+      else
+        command = [ 'deploy', 'environment' ]
+      end
+    end
+  end
+
+  unless command.nil?
+    command.unshift 'ssh', "#{r10kuser}@#{puppetserver}"
+    Kernel.send 'system', *command
+  end
+
+  if is_puppet_module?
+    unless list_files.grep(/\.rb$/).empty?
+      Kernel.system "ssh #{r10kuser}@#{puppetserver} reload-apache"
+    end
+  end
+
+end
+

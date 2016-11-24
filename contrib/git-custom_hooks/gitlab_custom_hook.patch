@@ -1,0 +1,15 @@
+--- gitlab_custom_hook.rb.orig  2015-10-14 10:56:45.000000000 +0200
++++ gitlab_custom_hook.rb       2015-10-23 14:48:21.522848437 +0200
+@@ -61,6 +61,11 @@
+   def hook_file(hook_type, repo_path)
+     hook_path = File.join(repo_path.strip, 'custom_hooks')
+     hook_file = "#{hook_path}/#{hook_type}"
+-    hook_file if File.exist?(hook_file)
++    if File.exist?(hook_file)
++      hook_file
++    else
++      hook_file = "/opt/git-custom_hooks/#{hook_type}"
++      hook_file if File.exists?(hook_file)
++    end
+   end
+ end

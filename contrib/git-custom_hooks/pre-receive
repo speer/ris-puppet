@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+
+# pre-receive git hook to perform validation on changed files
+#
+# Authors:
+#  Stefan Peer
+#  Thomas Gelf
+
+require File.expand_path('../ris-git-hook', __FILE__)
+
+Ris::GitHook.run do
+  run_all_validators if has_validator_checks_enabled?
+  exit_with_error "Validation failed" if found_errors?
+end
+
+
